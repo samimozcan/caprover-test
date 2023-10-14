@@ -4,9 +4,8 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'postgresMyPC',
   connector: 'postgresql',
-  url:
-    process.env.PG_CONN_STR,
-  host: 'postgres',
+  url: '',
+  host: 'localhost',
   port: 5432,
   user: 'postgres',
   password: 'pass123',
