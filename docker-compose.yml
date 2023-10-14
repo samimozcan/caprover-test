@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    environment:
+      - PG_CONN_STR=postgres://postgres:pass123@postgres:5432/test
+      - PORT=4001
+    ports:
+      - 4001:4001
+    command: npm start
+
+  db:
+    image: postgres:13  # Or the version you need
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/test/data
+
+volumes:
+  postgres_data:
