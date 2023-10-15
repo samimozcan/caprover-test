@@ -18,7 +18,9 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.SSH_KEY }}
       run: |
+        echo 'before'
         echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
+        echo 'after'
 
   build-and-deploy:
     runs-on: ubuntu-latest
