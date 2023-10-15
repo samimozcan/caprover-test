@@ -22,6 +22,5 @@ jobs:
           script: |
             cd /root/apps/caprover-test
             git pull
-            npm install  # If necessary
             npm run build
             pm2 restart index
