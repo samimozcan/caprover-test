@@ -6,52 +6,13 @@ on:
       - development
 
 jobs:
-  debug:
-    name: Debug
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Set up secret file
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.SSH_KEY }}
-      run: |
-        echo 'before'
-        echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
-        echo 'after'
-
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Add steps to build/test your project here.
-      # ...
-      - name: Test ssh key
-        run: |
-          echo "Ensuring SSH key is available and in correct format..."
-          KEY_LINES=$(echo "${{ secrets.SSH_KEY }}" | wc -l)
-          if [[ "$KEY_LINES" -lt 10 ]]; then
-            echo "SSH Key seems too short, likely an issue!"
-            exit 1
-          else
-            echo "SSH Key has $KEY_LINES lines, seems to be present."
-          fi
-
-
-      - name: Copy files to droplet
-        uses: appleboy/scp-action@v0.1.1
-        with:
-          host: ${{ secrets.DROPLET_IP }}
-          username: ${{ secrets.DROPLET_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          source: "."
-          target: "/your/app/directory/on/droplet"
-
+        
       - name: Restart app on droplet
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -60,6 +21,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /root/apps/caprover-test
+            git pull
             npm install  # If necessary
             npm run build
             pm2 restart index
