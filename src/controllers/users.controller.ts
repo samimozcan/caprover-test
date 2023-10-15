@@ -90,7 +90,7 @@ export class UsersController {
   })
   async test(
   ): Promise<string> {
-    return 'test';
+    return 'after test';
   }
 
   @patch('/users')
