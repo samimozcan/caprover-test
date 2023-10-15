@@ -37,7 +37,7 @@ export class UsersController {
         'application/json': {
           schema: getModelSchemaRef(Users, {
             title: 'NewUsers',
-            
+
           }),
         },
       },
@@ -74,6 +74,23 @@ export class UsersController {
     @param.filter(Users) filter?: Filter<Users>,
   ): Promise<Users[]> {
     return this.usersRepository.find(filter);
+  }
+
+  @get('/test')
+  @response(200, {
+    description: 'Array of Users model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Users, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async test(
+  ): Promise<string> {
+    return 'test';
   }
 
   @patch('/users')
