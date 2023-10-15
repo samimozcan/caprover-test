@@ -15,6 +15,11 @@ jobs:
 
       # Add steps to build/test your project here.
       # ...
+      - name: Test
+        run: |
+          echo "Testing..."
+          echo ${{ secrets.SSH_KEY }}
+
 
       - name: Copy files to droplet
         uses: appleboy/scp-action@v0.1.1
