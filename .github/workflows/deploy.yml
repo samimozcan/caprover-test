@@ -17,8 +17,14 @@ jobs:
       # ...
       - name: Test
         run: |
-          echo "Testing..."
-          echo ${{ secrets.SSH_KEY }}
+        echo "Ensuring SSH key is available and in correct format..."
+        KEY_LINES=$(echo "${{ secrets.SSH_PRIVATE_KEY }}" | wc -l)
+        if [[ "$KEY_LINES" -lt 10 ]]; then
+          echo "SSH Key seems too short, likely an issue!"
+          exit 1
+        else
+          echo "SSH Key has $KEY_LINES lines, seems to be present."
+        fi
 
 
       - name: Copy files to droplet
